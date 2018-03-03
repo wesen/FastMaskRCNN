@@ -223,7 +223,7 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
     logging.info('Shards: {}'.format(num_shards))
     num_per_shard = int(math.ceil(len(imgs) / float(num_shards)))
 
-    with tf.Graph().as_default(), tf.device(settings.tf_device):
+    with tf.Graph().as_default():
 
 
         # TODO what were these and why were they just straggling. Commented out for now
