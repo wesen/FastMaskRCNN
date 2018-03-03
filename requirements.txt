@@ -1,2 +1,6 @@
+matplotlib
+Pillow
+tensorflow
+numpy
 cython
 ujson
