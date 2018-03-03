@@ -14,9 +14,9 @@ import libs.preprocessings.coco_v1 as coco_preprocess
 def get_dataset(dataset_name, split_name, dataset_dir, im_batch=1, is_training=False, file_pattern=None, reader=None):
     """"""
     if file_pattern is None:
-        file_pattern = os.path.join(dataset_name + '_' + split_name, '*.tfrecord')
+        file_pattern = os.path.join(dataset_dir, 'records', '*.tfrecord')
 
-    tfrecords = glob.glob(dataset_dir + '/records/' + file_pattern)
+    tfrecords = glob.glob(file_pattern)
     print(tfrecords)
     image, ih, iw, gt_boxes, gt_masks, num_instances, img_id = coco.read(tfrecords)
 

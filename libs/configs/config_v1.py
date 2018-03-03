@@ -3,16 +3,17 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
+import settings
 
 ##########################
 #                  restore
 ##########################
 tf.app.flags.DEFINE_string(
-    'train_dir', './output/mask_rcnn/',
+    'train_dir', settings.logdir,
     'Directory where checkpoints and event logs are written to.')
 
 tf.app.flags.DEFINE_string(
-    'pretrained_model', './data/pretrained_models/resnet_v1_50.ckpt',
+    'pretrained_model', settings.model_file,
     'Path to pretrained model')
 
 ##########################
@@ -33,17 +34,17 @@ tf.app.flags.DEFINE_integer(
     'num_readers', 4,
     'The number of parallel readers that read data from the dataset.')
 
-tf.app.flags.DEFINE_string(
-    'dataset_name', 'coco',
-    'The name of the dataset to load.')
-
-tf.app.flags.DEFINE_string(
-    'dataset_split_name', 'train2014',
-    'The name of the train/test/val split.')
-
-tf.app.flags.DEFINE_string(
-    'dataset_dir', 'data/coco/',
-    'The directory where the dataset files are stored.')
+# tf.app.flags.DEFINE_string(
+#     'dataset_name', 'coco',
+#     'The name of the dataset to load.')
+#
+# tf.app.flags.DEFINE_string(
+#     'dataset_split_name', 'train2014',
+#     'The name of the train/test/val split.')
+#
+# tf.app.flags.DEFINE_string(
+#     'dataset_dir', 'data/coco/',
+#     'The directory where the dataset files are stored.')
 
 tf.app.flags.DEFINE_integer(
     'im_batch', 1,

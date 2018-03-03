@@ -235,8 +235,9 @@ def train():
     cropped_rois = tf.get_collection('__CROPPED__')[0]
     transposed = tf.get_collection('__TRANSPOSED__')[0]
 
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.95)
-    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+    # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.95)
+    # sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+    sess = tf.Session()
     init_op = tf.group(
         tf.global_variables_initializer(),
         tf.local_variables_initializer()
@@ -334,9 +335,7 @@ def train():
             summary_writer.flush()
 
         if (step % 10000 == 0 or step + 1 == FLAGS.max_iters) and step != 0:
-            checkpoint_path = os.path.join(FLAGS.train_dir,
-                                           FLAGS.dataset_name + '_' + FLAGS.network + '_model.ckpt')
-            saver.save(sess, checkpoint_path, global_step=step)
+            saver.save(sess, settings.checkpoint_dir, global_step=step)
 
         if coord.should_stop():
             coord.request_stop()

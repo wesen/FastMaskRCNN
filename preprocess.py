@@ -236,8 +236,8 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
                     start_ndx = shard_id * num_per_shard
                     end_ndx = min((shard_id + 1) * num_per_shard, len(imgs))
                     for i in range(start_ndx, end_ndx):
-                        if i % 100 == 0:
-                            print('\r>> Converting image {}/{} shard {}'.format(i + 1, len(imgs), shard_id))
+                        if i % 500 == 0:
+                            print('Converting image {}/{} shard {}'.format(i, len(imgs), shard_id))
 
                         #COCO_train2014_integer.jpg
                         # image id and path
