@@ -1,4 +1,4 @@
-Place and unzip your coco in this dir, like
+Place and unzip your coco in a directory outside the project
 
 ```buildoutcfg
 ./data

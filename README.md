@@ -6,14 +6,23 @@ This repo attempts to reproduce this amazing work by Kaiming He et al. :
 
 ## Requirements
 
+- Python 3.6
+- Python 3.6 dev headers
+
 - [Tensorflow (>= 1.0.0)](https://www.tensorflow.org/install/install_linux)
+
+More specifically: TensorFlow 1.6.0 or TensorFlow-GPU 1.6.0
+
+-TensorBoard
+
 - [Numpy](https://github.com/numpy/numpy/blob/master/INSTALL.rst.txt)
 - [COCO dataset](http://mscoco.org/dataset/#download)
+- Using 2017 dataset
 - [Resnet50](http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz)
 
 ## How-to
 1. Go to `./libs/datasets/pycocotools` and run `make`
-2. Download [COCO](http://mscoco.org/dataset/#download) dataset, place it into `./data`, then run `python download_and_convert_data.py` to build tf-records. It takes a while.
+2. Download [COCO](http://mscoco.org/dataset/#download) dataset, place it into a place outside the project and configure settings.py dataset_dir, then run `python download_and_convert_data.py` to build tf-records. It takes a while.
 3. Download pretrained resnet50 model, `wget http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz`, unzip it, place it into `./data/pretrained_models/`
 4. Go to `./libs` and run `make`
 5. run `python train/train.py` for training
