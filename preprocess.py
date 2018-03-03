@@ -10,7 +10,7 @@ from six.moves import urllib
 from PIL import Image
 import skimage.io as io
 from matplotlib import pyplot as plt
-
+import logging
 from libs.datasets.pycocotools.coco import COCO
 from tensorflow.python.lib.io.tf_record import TFRecordCompressionType
 from libs.logs.log import LOG
@@ -26,6 +26,8 @@ from libs.logs.log import LOG
 #     _TRAIN_DATA_URL, _VAL_DATA_URL,
 #     _INS_LABEL_URL, _KPT_LABEL_URL, _CPT_LABEL_URL,
 # ]
+
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_boolean('vis', False,
@@ -189,7 +191,7 @@ def _get_coco_masks(coco, img_id, height, width, img_name):
         bboxes = np.zeros([0, 4], dtype=np.float32)
         classes = np.zeros([0], dtype=np.float32)
         # TODO why are there so many reported missing annotatinos in 2017 is it my download? Is this logic wrong here? Are they just missing?
-        print('Missing annotation {}'.format(img_name))
+        logging.warning('Missing annotation {}'.format(img_name))
         # LOG('None Annotations %s' % img_name)
     bboxes[:, 2] = bboxes[:, 0] + bboxes[:, 2]
     bboxes[:, 3] = bboxes[:, 1] + bboxes[:, 3]
@@ -213,12 +215,12 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
     coco = COCO(ann_file)
 
     cats = coco.loadCats(coco.getCatIds())
-    print('{} has {:,} images'.format(split_name, len(coco.imgs)))
+    logging.info('{} has {:,} images'.format(split_name, len(coco.imgs)))
     imgs = [(img_id, coco.imgs[img_id]) for img_id in coco.imgs]
 
     # TODO do shards correspond to records/*.tfrecord? records dir will be very large. Is this duplication/preprocessing necessary or can we more directly feed to GPU?
     num_shards = int(len(imgs) / 2500)
-    print('Shards:', num_shards)
+    logging.info('Shards: {}'.format(num_shards))
     num_per_shard = int(math.ceil(len(imgs) / float(num_shards)))
 
     with tf.Graph().as_default(), tf.device(settings.tf_device):
@@ -240,7 +242,7 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
                     end_ndx = min((shard_id + 1) * num_per_shard, len(imgs))
                     for i in range(start_ndx, end_ndx):
                         if i % 500 == 0:
-                            print('Converting image {}/{:,} shard {}'.format(i, len(imgs), shard_id))
+                            logging.info('Converting image {}/{:,} shard {}'.format(i, len(imgs), shard_id))
 
                         img_id = imgs[i][0]
                         img_name = imgs[i][1]['file_name']
@@ -268,7 +270,7 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
                         img = np.array(Image.open(img_name))
                         if img.size == height * width:
                             # TODO what is this and why does it matter
-                            print('Gray Image at ID {}'.format(img_id))
+                            logging.warning('Gray Image at {}'.format(img_name))
                             im = np.empty((height, width, 3), dtype=np.uint8)
                             im[:, :, :] = img[:, :, np.newaxis]
                             img = im
@@ -288,7 +290,7 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
 
                         tfrecord_writer.write(example.SerializeToString())
 
-
+#TODO figure out what this was and if it's ok to delete it
 # def _add_to_tfrecord_trainvalsplit(record_dir, image_dir, annotation_dir, split_name):
 #     """Loads image files and writes files to a TFRecord.
 #     Note: masks and bboxes will lose shape info after converting to string.
