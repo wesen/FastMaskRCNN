@@ -242,6 +242,9 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
                         img_name = imgs[i][1]['file_name']
                         img_name = os.path.join(image_dir, split_name, img_name)
 
+                        if not os.path.exists(img_name):
+                            continue
+
                         if FLAGS.vis:
                             im = Image.open(img_name)
                             # im.save('img.png')
