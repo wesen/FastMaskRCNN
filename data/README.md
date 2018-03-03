@@ -1,9 +1,9 @@
-Place and unzip your coco in a directory outside the project
+Place and unzip your coco in a directory outside the project. Use 2014 or 2017
 
 ```buildoutcfg
-./data
-    ./coco
+<foldername>
+    ./mscoco
         ./annotations
-        ./train2014
-        ./val2014
+        ./train2017
+        ./val2017
 ```

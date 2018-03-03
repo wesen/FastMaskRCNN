@@ -21,8 +21,9 @@ More specifically: TensorFlow 1.6.0 or TensorFlow-GPU 1.6.0
 - [Resnet50](http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz)
 
 ## How-to
+0. For now you must configure settings.py and review libs/configs/config_v1.py until things are parameterized and consolidated
 1. Go to `./libs/datasets/pycocotools` and run `make`
-2. Download [COCO](http://mscoco.org/dataset/#download) dataset, place it into a place outside the project and configure settings.py dataset_dir, then run `python download_and_convert_data.py` to build tf-records. It takes a while.
+2. Download [COCO](http://mscoco.org/dataset/#download) dataset, place it into a place outside the project and configure settings.py dataset_dir, then run `python preprocess.py` to build tf-records. It takes a while.
 3. Download pretrained resnet50 model, `wget http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz`, unzip it, place it into `./data/pretrained_models/`
 4. Go to `./libs` and run `make`
 5. run `python train/train.py` for training

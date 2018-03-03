@@ -1,3 +1,4 @@
+img.png
 output/mask_rcnn/**
 !output/mask_rcnn/.keep
 data/**
