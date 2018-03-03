@@ -1,19 +1,15 @@
-import settings
-import os
-import sys
+import logging
 import math
-import zipfile
-import time
+import os
+
 import numpy as np
 import tensorflow as tf
-from six.moves import urllib
 from PIL import Image
-import skimage.io as io
 from matplotlib import pyplot as plt
-import logging
-from libs.datasets.pycocotools.coco import COCO
 from tensorflow.python.lib.io.tf_record import TFRecordCompressionType
-from libs.logs.log import LOG
+
+import settings
+from libs.datasets.pycocotools.coco import COCO
 
 # The URL where the coco data can be downloaded.
 #
@@ -225,13 +221,11 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
 
     with tf.Graph().as_default():
 
-
         # TODO what were these and why were they just straggling. Commented out for now
         # image_reader = ImageReader()
         # encode mask to png_string
         # mask_placeholder = tf.placeholder(dtype=tf.uint8)
         # encoded_image = tf.image.encode_png(mask_placeholder)
-
 
         with tf.Session() as sess:
             for shard_id in range(num_shards):
@@ -290,7 +284,8 @@ def _add_to_tfrecord(record_dir, image_dir, annotation_dir, split_name):
 
                         tfrecord_writer.write(example.SerializeToString())
 
-#TODO figure out what this was and if it's ok to delete it
+
+# TODO figure out what this was and if it's ok to delete it
 # def _add_to_tfrecord_trainvalsplit(record_dir, image_dir, annotation_dir, split_name):
 #     """Loads image files and writes files to a TFRecord.
 #     Note: masks and bboxes will lose shape info after converting to string.
@@ -413,7 +408,6 @@ annotation_dir = os.path.join(settings.dataset_dir, 'annotations')
 
 if not tf.gfile.Exists(record_dir):
     tf.gfile.MakeDirs(record_dir)
-
 
 _add_to_tfrecord(record_dir, settings.dataset_dir, annotation_dir, settings.train_split_name)
 _add_to_tfrecord(record_dir, settings.dataset_dir, annotation_dir, settings.val_split_name)
